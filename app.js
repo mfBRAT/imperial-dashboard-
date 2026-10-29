@@ -182,7 +182,7 @@ function render() {
   ])) + card("Account", D.balanceSource ? "Balance from " + D.balanceSource : null, props([
     ["Balance", usd(D.balance, 4) + " USDC"],
     ["Equity vs start", `${usd(D.equity, 4)} vs ${usd(D.start)}`],
-    ["Kill line (−" + (isN(lim.killDd) ? (lim.killDd * 100).toFixed(0) : "–") + "%)", usd(D.killLine)],
+    ["Kill line (equity floor)", usd(D.killLine)],
     ["Today's P&L", `<span class="${tone(D.dayPnl)}">${usd(D.dayPnl, 4)}</span> of ${usd(D.dayCap)} cap`],
     ["Trades today", `${esc(D.dayTrades ?? "–")} of ${esc(D.maxTrades ?? "–")}`],
     ["Consecutive losses", `${esc(D.consecLosses ?? "–")} of ${esc(D.killConsec ?? "–")}`],
@@ -245,7 +245,7 @@ function render() {
     ["Fear & Greed", rn("fng") === null ? "–" : String(rn("fng"))], ...(reg.note ? [["Note", `<span class="muted small">${esc(reg.note)}</span>`]] : [])]));
   h += card("Safety limits", null, props([
     ["Risk per trade", usd(lim.risk)], ["Daily loss cap", usd(D.dayCap)],
-    ["Kill switch", `−${isN(lim.killDd) ? (lim.killDd * 100).toFixed(0) : "–"}% equity (${usd(D.killLine)}) or ${esc(D.killConsec ?? "–")} straight losses`],
+    ["Kill switch", `equity at or below ${usd(D.killLine)} or ${esc(D.killConsec ?? "–")} straight losses`],
     ["Max open positions", esc(lim.maxPos ?? "–")], ["Max trades per day", esc(D.maxTrades ?? "–")],
     ...(info.sizing ? [["Notional and leverage", esc(info.sizing)]] : []),
     ["Protections", esc((Array.isArray(lim.protections) && lim.protections.length ? lim.protections.join(", ") + "; " : "") + "exchange SL/TP on every position")],
