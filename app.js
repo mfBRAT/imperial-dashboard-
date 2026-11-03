@@ -103,7 +103,7 @@ const PILL_NOTE = {
   Halted: "A kill switch or failsafe fired; the bot only heartbeats and will not trade until reset.",
   Stopped: "Supervisor or trader not running, or the STOP file is present.",
 };
-const KNOWN = new Set("asOf pill supervisorPid traderPid watchdogPid stop heartbeat heartbeatAgeS mode profile lastError killed haltedToday balanceSource balance equity start killLine dayPnl dayCap dayTrades maxTrades cumPnl consecLosses killConsec theta lastBarUtc lastBarLabel positions latest history trades regime regimeAsOf log streak limits".split(" "));
+const KNOWN = new Set("asOf pill supervisorPid traderPid watchdogPid stop heartbeat heartbeatAgeS mode profile lastError killed haltedToday balanceSource balance equity start killLine dayPnl dayCap dayTrades maxTrades cumPnl consecLosses killConsec theta lastBarUtc lastBarLabel positions latest history trades regime regimeAsOf log streak churn limits".split(" "));
 
 /* ---------- charts (SVG) ---------- */
 function scoreBars(rows, theta) {
@@ -201,6 +201,20 @@ function render() {
         props([["Top-up window", `${esc(S.deadline ?? "–")} → ${esc(S.cutoff ?? "–")}`], ["Top-ups / attempts", `${esc(S.topups ?? 0)} / ${esc(S.attempts ?? 0)}`],
                ["Last note", esc(S.lastNote ?? "–")], ["Source", esc(S.source ?? "–")]]));
     }
+  }
+
+  // points-mode churn (rotate)
+  const C = D.churn;
+  if (C && typeof C === "object") {
+    const cp = isN(C.dayVolumeUsd) && isN(C.targetUsd) && C.targetUsd > 0 ? Math.min(100, (C.dayVolumeUsd / C.targetUsd) * 100) : 0;
+    h += card("Points churn", `${C.day ?? ""} · close + reopen of a held slot at its original SL/TP`,
+      `<div><b>${esc(C.count ?? 0)}</b> of ${esc(C.maxPerDay ?? "–")} churns today · day volume <b>${usd(C.dayVolumeUsd, 0)}</b> of ${usd(C.targetUsd, 0)} target (due now ${usd(C.dueUsd, 0)})</div>
+       <div class="bar"><span style="width:${cp.toFixed(1)}%"></span></div>` +
+      props([["Churn volume", usd(C.volumeUsd, 0)], ["Churn cost (fees / realized)", `${usd(C.feesUsd, 4)} / <span class="${tone(C.realizedUsd)}">${usd(C.realizedUsd, 4)}</span>`],
+             ["Avg open interest", usd(C.avgOiUsd, 0)], ["Last churn", esc(C.last ?? "–")],
+             ["Status", C.disabled ? `<span class="neg">${esc(C.disabled)}</span>` : esc(C.status ?? "–")],
+             ["Pending reopen", C.pending ? esc(`${C.pending.symbol} since ${C.pending.since_la} (tries ${C.pending.tries})`) : "None"],
+             ["Last note", esc(C.note ?? "–")]]));
   }
 
   // positions
