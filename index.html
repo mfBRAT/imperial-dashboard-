@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#0d1117">
-<title>Imperial bot dashboard</title>
+<meta name="theme-color" content="#07090d">
+<meta name="color-scheme" content="dark">
+<title>Imperial bot · live terminal</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="lock" class="lock">
-  <form id="lockform" class="card lockcard" autocomplete="on">
-    <h1>Imperial bot dashboard</h1>
-    <p class="muted">The data on this page is encrypted. Enter your dashboard password to unlock it.</p>
+  <form id="lockform" class="panel lockcard" autocomplete="on">
+    <div class="brand"><span class="blink">▮</span> IMPERIAL<span class="dim">//</span>TERMINAL</div>
+    <p class="dim">Encrypted dashboard. Enter your password to unlock. It stays in this tab only and is cleared when you close it.</p>
     <input type="text" name="username" value="imperial-dashboard" autocomplete="username" hidden>
-    <input id="pw" type="password" autocomplete="current-password" placeholder="Password" required autofocus>
-    <label class="check"><input id="remember" type="checkbox"> Remember on this device</label>
-    <button id="unlock" type="submit">Unlock</button>
+    <input id="pw" type="password" autocomplete="current-password" placeholder="password" required autofocus>
+    <button id="unlock" type="submit">UNLOCK</button>
     <p id="lockerr" class="err" role="alert"></p>
   </form>
 </div>
